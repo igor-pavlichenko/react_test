@@ -19,6 +19,24 @@ class App extends Component {
          fetching resources (including across the network).
        2) Maybe you want to update the state here.
     */
+
+    // github credentials
+    const clientId = 'd68a7c11a33ebe6edc8c';
+    const clientSecret = 'abd467510a662c60a7561db8cd6ac0279b9ebbc2';
+
+    const baseUrl = 'http://api.github.com/users/';
+    const username = 'gaearon';
+    
+    // make the request
+    fetch(baseUrl + username
+                  + '?client_id='     + clientId
+                  + '&client_secret=' + clientSecret)
+      .then(res => res.json())
+      .then(json => {
+        console.log('github response: ', json);
+        // update state with fetched json
+        this.setState({ user: json });
+      });
   }
 
   render() {
@@ -38,7 +56,7 @@ class App extends Component {
             Click me
           </button>
         </div>
-        <UserInformation />
+        <UserInformation user={this.state.user} />
       </div>
     );
   }
