@@ -7,7 +7,10 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { user: {} }
+    this.state = {
+      // 
+      user: null,
+    }
   }
 
   getUserInformation() {
@@ -26,11 +29,11 @@ class App extends Component {
 
     const baseUrl = 'http://api.github.com/users/';
     const username = 'gaearon';
-    
+
     // make the request
     fetch(baseUrl + username
-                  + '?client_id='     + clientId
-                  + '&client_secret=' + clientSecret)
+      + '?client_id=' + clientId
+      + '&client_secret=' + clientSecret)
       .then(res => res.json())
       .then(json => {
         console.log('github response: ', json);
@@ -52,11 +55,15 @@ class App extends Component {
         <div className="App-intro">
           <hr />
           <p>Click on the button to fetch the user information</p>
-          <button onClick={this.getUserInformation.bind(this)}>
-            Click me
-          </button>
+          {!this.state.user &&
+            <button onClick={this.getUserInformation.bind(this)}>
+              Click me
+            </button>
+          }
         </div>
-        <UserInformation user={this.state.user} />
+        {this.state.user &&
+          <UserInformation user={this.state.user} />
+        }
       </div>
     );
   }
