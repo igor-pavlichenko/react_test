@@ -39,7 +39,7 @@ class App extends Component {
         console.log('github response: ', json);
         // update state with fetched json
         this.setState({ user: json });
-      });
+      }).catch(err => console.warn('fetch error: ', err));
   }
 
   render() {
