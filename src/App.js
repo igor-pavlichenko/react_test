@@ -2,15 +2,23 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import UserInformation from './UserInformation';
+import Repos from './Repos';
 
 class App extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      // 
       user: null,
+      repos: [],
     }
+
+    // github credentials
+    this.clientId = 'd68a7c11a33ebe6edc8c';
+    this.clientSecret = 'abd467510a662c60a7561db8cd6ac0279b9ebbc2';
+
+    this.baseUrl = 'http://api.github.com/users/';
+    this.username = 'gaearon';
   }
 
   getUserInformation() {
@@ -23,23 +31,33 @@ class App extends Component {
        2) Maybe you want to update the state here.
     */
 
-    // github credentials
-    const clientId = 'd68a7c11a33ebe6edc8c';
-    const clientSecret = 'abd467510a662c60a7561db8cd6ac0279b9ebbc2';
-
-    const baseUrl = 'http://api.github.com/users/';
-    const username = 'gaearon';
-
     // make the request
-    fetch(baseUrl + username
-      + '?client_id=' + clientId
-      + '&client_secret=' + clientSecret)
+    fetch(this.baseUrl + this.username
+      + '?client_id=' + this.clientId
+      + '&client_secret=' + this.clientSecret)
       .then(res => res.json())
       .then(json => {
         console.log('github response: ', json);
         // update state with fetched json
         this.setState({ user: json });
-      }).catch(err => console.warn('fetch error: ', err));
+        // fetch user's repos
+        this.getUserRepos();
+      }).catch(err => console.warn('fetch user error: ', err));
+  }
+
+  getUserRepos = () => {
+    // make the request
+    fetch(this.baseUrl + this.username
+      + '/repos?client_id=' + this.clientId
+      + '&client_secret=' + this.clientSecret
+      + '&sort=updated&direction=desc'
+    )
+      .then(res => res.json())
+      .then(json => {
+        console.log('repos: ', json);
+        // update state with fetched json
+        this.setState({ repos: json });
+      }).catch(err => console.warn('fetch repos error: ', err));
   }
 
   render() {
@@ -62,7 +80,10 @@ class App extends Component {
           }
         </div>
         {this.state.user &&
-          <UserInformation user={this.state.user} />
+          <div className="main-container">
+            <UserInformation user={this.state.user} />
+            <Repos repos={this.state.repos} />
+          </div>
         }
       </div>
     );

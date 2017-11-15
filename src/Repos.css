@@ -1,0 +1,19 @@
+.repos {
+  max-width: 700px;
+  min-width: 300px; }
+  .repos .repo {
+    text-align: left; }
+    .repos .repo h3 {
+      font-weight: 500;
+      font-size: 24px;
+      margin-bottom: 0; }
+    .repos .repo p {
+      margin-top: 5px; }
+    .repos .repo .misc-info {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start; }
+      .repos .repo .misc-info span {
+        margin-right: 16px; }
+  .repos hr {
+    opacity: 0.8; }
